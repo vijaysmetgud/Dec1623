@@ -29,12 +29,21 @@ pipeline {
                 sh "docker image push shaikkhajaibrahim/jenkinsdec23workshop:$BUILD_ID"
             }
         }
+        stage('deploy to k8s') {
+            steps {
+                sh "kubectl apply -f deployment/k8s/deployment.yaml"
+                sh """
+                kubectl patch deployment netflix-app -p '{"spec":{"template":{"spec":{"containers":[{"name":"netflix-app","image":"shaikkhajaibrahim/jenkinsdec23workshop:$BUILD_ID"}]}}}}'
+                """
+            }
+        }
 
         stage('kube-bench Scan') {
             steps {
                 script {
                     sh "/home/ubuntu/kubebench/kube-bench --json > kube-bench-report.json"
                 }
+                publishHTML([reportName: 'kube-bench Report', reportDir: '.', reportFiles: 'kube-bench-report.json', keepAll: true, alwaysLinkToLastBuild: true, allowMissing: false])
             }
         }
     }
