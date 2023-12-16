@@ -14,6 +14,15 @@ terraform {
 provider "azurerm" {
   features {}
 }
+
+terraform {
+  backend "azurerm" {
+    storage_account_name = "idontknowlt"
+    container_name       = "tflock"
+    key                  = "workshopdec23.tfstate"
+  }
+}
+
 resource "azurerm_resource_group" "example" {
   name     = "example-resources"
   location = "East US"
