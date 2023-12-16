@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Ensure kubernetes cluster is up') {
             steps {
-                sh "terraform apply deployment/terraform -auto-approve"
+                sh "cd deployment/terraform && terraform init && terraform apply -auto-approve"
             }
         }
         stage('deploy to k8s') {

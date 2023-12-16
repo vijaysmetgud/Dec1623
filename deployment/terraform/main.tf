@@ -20,6 +20,7 @@ terraform {
     storage_account_name = "idontknowlt"
     container_name       = "tflock"
     key                  = "workshopdec23.tfstate"
+    resource_group_name = "DefaultResourceGroup-EUS"
   }
 }
 
