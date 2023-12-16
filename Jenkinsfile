@@ -29,6 +29,11 @@ pipeline {
                 sh "docker image push shaikkhajaibrahim/jenkinsdec23workshop:$BUILD_ID"
             }
         }
+        stage('Ensure kubernetes cluster is up') {
+            steps {
+                sh "terraform apply deployment/terraform -auto-approve"
+            }
+        }
         stage('deploy to k8s') {
             steps {
                 sh "kubectl apply -f deployment/k8s/deployment.yaml"
@@ -38,10 +43,10 @@ pipeline {
             }
         }
 
-        stage('kube-bench Scan') {
+        stage('kubescape Scan') {
             steps {
                 script {
-                    sh "kubescape scan -t "40" deployment/k8s/deployment.yaml --format junit -o TEST-report.xml"
+                    sh "/home/ubuntu/.kubescape/bin/kubescape scan -t 40 deployment/k8s/deployment.yaml --format junit -o TEST-report.xml"
                     junit "**/TEST-*.xml"
                 }
                 
