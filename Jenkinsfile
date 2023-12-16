@@ -41,9 +41,10 @@ pipeline {
         stage('kube-bench Scan') {
             steps {
                 script {
-                    sh "/home/ubuntu/kubebench/kube-bench --json > kube-bench-report.json"
+                    sh "kubescape scan -t "40" deployment/k8s/deployment.yaml --format junit -o TEST-report.xml"
+                    junit "**/TEST-*.xml"
                 }
-                publishHTML([reportName: 'kube-bench Report', reportDir: '.', reportFiles: 'kube-bench-report.json', keepAll: true, alwaysLinkToLastBuild: true, allowMissing: false])
+                
             }
         }
     }
