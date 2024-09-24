@@ -26,7 +26,7 @@ pipeline {
         }
         stage('publish docker image') {
             steps {
-                sh "docker tag latest vsmetgud/jenkinsworkshop:$BUILD_ID"
+                sh "docker tag vsmetgud/jenkinsworkshop:$BUILD_ID vsmetgud/jenkinsworkshop:$BUILD_ID"
                 sh "docker push vsmetgud/jenkinsworkshop:$BUILD_ID"
             }
         }
