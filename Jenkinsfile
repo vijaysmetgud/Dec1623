@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'docker' }
+    agent any
     stages {
         stage('clean workspace'){
             steps{
@@ -13,20 +13,20 @@ pipeline {
         }
         stage('Build docker image') {
             steps {
-                sh "docker image build -t shaikkhajaibrahim/jenkinsdec23workshop:$BUILD_ID ."
+                sh "docker image build -t vsmetgud/jenkinsworkshop:$BUILD_ID ."
             }
         }
         stage('Trivy Scan') {
             steps {
                 script {
-                    sh "trivy image --format json -o trivy-report.json shaikkhajaibrahim/jenkinsdec23workshop:$BUILD_ID"
+                    sh "trivy image --format json -o trivy-report.json vsmetgud/jenkinsworkshop:$BUILD_ID"
                 }
                 publishHTML([reportName: 'Trivy Vulnerability Report', reportDir: '.', reportFiles: 'trivy-report.json', keepAll: true, alwaysLinkToLastBuild: true, allowMissing: false])
             }
         }
         stage('publish docker image') {
             steps {
-                sh "docker image push shaikkhajaibrahim/jenkinsdec23workshop:$BUILD_ID"
+                sh "docker image push vsmetgud/jenkinsworkshop:$BUILD_ID"
             }
         }
                                   
