@@ -26,7 +26,7 @@ pipeline {
         }
         stage('publish docker image') {
             steps {                
-                sh "docker tag /var/lib/docker/image/overlay2/imagedb/metadata/sha256/* vsmetgud/jenkinsworkshop:$BUILD_ID"
+                sh "docker tag **/sha256/ vsmetgud/jenkinsworkshop:$BUILD_ID"
                 sh "docker push vsmetgud/jenkinsworkshop:$BUILD_ID"
             }
         }
